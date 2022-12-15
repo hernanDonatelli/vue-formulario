@@ -1,5 +1,5 @@
 <template>
-  <table class="table">
+  <table class="table table-striped table-bordered">
     <thead>
       <tr>
         <th scope="col">Nombre</th>
@@ -9,30 +9,24 @@
       </tr>
     </thead>
     <tbody>
-        <fila-component
-        v-for="(user, index) in usuarios" :key="index"
-        is="fila-component"
-        :nombre="user.nombre"
-        :edad="user.edad"
-        :email="user.email"
-        :cursos="user.cursos"/>
+      <tr class="fila" v-for="(user, index) in usuarios" :key="index">
+        <td>{{user.nombre}}</td>
+        <td>{{user.edad}}</td>
+        <td>{{user.email}}</td>
+        <td>
+            <span v-for="(curso, index) in user.cursos" :key="index">
+              {{index+1}}-{{curso}}
+            </span>
+        </td>
+      </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-import FilaComponent from './FilaComponent.vue';
 
 export default {
   name: "TableComponent",
-  components:{
-    FilaComponent
-  },
-  data() {
-    return {
-      usuariosRecibidos: []
-    }
-  },
   props: {
     usuarios: Array
   }
@@ -40,4 +34,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

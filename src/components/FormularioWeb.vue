@@ -3,9 +3,10 @@
     <div v-if="(errores.length != 0)" class="alert alert-danger">
       {{mostrarErrores}}
     </div>
-    <form id="formulario" @submit="validarFormulario">
+    <form id="formulario" @submit.prevent="validarFormulario">
       <div class="row">
         <div class="col col-8 mx-auto">
+          <h1>Agregar Usuarios</h1>
           <br><br>
           <!-- Inputs Text -->
           <label for="inputNombre" class="text-start">Tu nombre</label>
@@ -55,10 +56,7 @@
 
           <!-- Submit -->
           <div class="row">
-            <br>
-            <div class="col-10"></div>
-            <br>
-            <div class="col-2">
+            <div class="col-12">
               <input type="submit" class="btn btn-primary" value="ENVIAR">
             </div>
             <br>
@@ -68,7 +66,8 @@
     </form>
 
     <div class="row mt-5">
-      <table-component/>
+      <h1>Listado de Usuarios</h1>
+      <table-component :usuarios="usuarios" />
     </div>
 
   </div>
@@ -89,16 +88,14 @@ export default {
       email: '',
       cursos: [],
       errores: [],
-      contador: 1,
-      usuario: []
+      usuarios: []
     }
   },
   methods: {
-    validarFormulario(e){
-      e.preventDefault();
-      if(this.nombre && this.contador > 1 && this.edad && this.email){
+    validarFormulario(){
+      if(this.nombre && this.edad && this.email){
         alert('Campos Obligatorios Ok! Enviando Formulario');
-        const formulario = document.getElementById('formulario');
+
         const datos = {
           nombre: this.nombre,
           edad: this.edad,
@@ -106,22 +103,20 @@ export default {
           cursos: this.cursos
         }
 
-        this.usuario.push(datos);
+        this.usuarios.push(datos);
 
         setTimeout(() => {
           //reset del formulario
-          formulario.reset();
-        }, 3000);
-        //vuelvo las variables a su estado original
-        Object.assign(this.$data, this.$options.data());
+          this.nombre = '';
+          this.edad = null;
+          this.email = '';
+          this.cursos = [];
+        }, 2000);
 
         return true;
       }
       if(!this.nombre){
         this.errores.push('El nombre es obligatorio!')
-      }
-      if(this.contador < 2){
-        this.errores.push('El campo debe contener Nombre y Apellido')
       }
       if(!this.edad){
         this.errores.push('La edad es obligatoria!')
@@ -155,5 +150,16 @@ a {
 }
 label {
   margin-left: 0.5em !important;
+}
+form{
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  padding-bottom: 2rem;
+}
+form h1{
+  margin-top: 1rem;
+}
+input[type="submit"]{
+  padding: .5rem 3rem;
 }
 </style>
